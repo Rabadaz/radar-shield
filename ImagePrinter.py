@@ -21,5 +21,4 @@ class ImagePrinter:
             while self.conn.getJobs().get(job_id, None):
                 sleep(1)
         else:
-            print("Printing is disabled")
-            sleep(100)
+            print("Printing is disabled!")

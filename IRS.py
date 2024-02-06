@@ -2,7 +2,7 @@
 
 import os
 import random
-from queue import Queue
+from multiprocessing import Queue
 import threading
 
 from StateMachine import StateMachine
@@ -26,7 +26,11 @@ run_high_score = 0
 def read_sensor_to_buffer():
     while True:
         mm = sensor.readLatestValue()
-        measurements.put(mm["speed"] * 3.6)
+        measurements.put(float(mm["speed"]) * 3.6)
+
+
+def take_image():
+    camera.take_image()
 
 
 if __name__ == "__main__":
@@ -35,11 +39,13 @@ if __name__ == "__main__":
     if os.environ.get("PRINTER") is None:
         printer.enabled = False
 
+
+
     sensorThread = threading.Thread(target=read_sensor_to_buffer)
     sensorThread.start()
-    sensorThread.join()
 
     while True:
+        print(state_machine.state)
         if state_machine.state == StateMachine.STATE.WAITING:
             if not measurements.empty():
                 state_machine.switch(StateMachine.STATE.DETECTING)
@@ -60,7 +66,8 @@ if __name__ == "__main__":
 
             if next_measurement > image_threshold:
                 state_machine.switch(state_machine.STATE.TRIGGERED)
-                camera.take_image()
+                photo_thread = threading.Thread(target=take_image)
+                photo_thread.start()
 
         elif state_machine.state == state_machine.STATE.TRIGGERED:
             if measurements.empty():
@@ -74,13 +81,12 @@ if __name__ == "__main__":
 
         elif state_machine.state == state_machine.STATE.WAITING_FOR_PRINT_CONFIRM:
             # print if confirmed by blynk
-            if random.randint(0, 1000) < 5:
-                printer.print(camera.image)
-                state_machine.switch(StateMachine.STATE.WAITING)
+            printer.print(camera.image)
+            state_machine.switch(StateMachine.STATE.WAITING)
 
             display.display_print_message(run_high_score)
 
-            state_machine.switch(StateMachine.STATE.WAITING, min_switch_time_duration=60)
+            #state_machine.switch(StateMachine.STATE.WAITING, min_switch_time_duration=60)
 
         else:
             print("Unknown State switching to WAITING")
