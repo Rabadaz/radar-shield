@@ -2,10 +2,8 @@
 
 import os
 import random
-from multiprocessing import Queue
-from time import sleep
+from queue import Queue
 import threading
-
 
 from StateMachine import StateMachine
 from OPS243Sensor import OPS243Sensor
@@ -28,7 +26,7 @@ run_high_score = 0
 def read_sensor_to_buffer():
     while True:
         mm = sensor.readLatestValue()
-        measurements.put(float(mm["speed"]) * 3.6)
+        measurements.put(mm["speed"] * 3.6)
 
 
 if __name__ == "__main__":
@@ -39,9 +37,9 @@ if __name__ == "__main__":
 
     sensorThread = threading.Thread(target=read_sensor_to_buffer)
     sensorThread.start()
+    sensorThread.join()
 
     while True:
-        print(state_machine.state, measurements.qsize())
         if state_machine.state == StateMachine.STATE.WAITING:
             if not measurements.empty():
                 state_machine.switch(StateMachine.STATE.DETECTING)
@@ -81,6 +79,7 @@ if __name__ == "__main__":
                 state_machine.switch(StateMachine.STATE.WAITING)
 
             display.display_print_message(run_high_score)
+
             state_machine.switch(StateMachine.STATE.WAITING, min_switch_time_duration=60)
 
         else:
