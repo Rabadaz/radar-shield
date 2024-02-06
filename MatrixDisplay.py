@@ -28,7 +28,8 @@ class MatrixDisplay:
             graphics.DrawLine(self.canvas, x1, y, x2, y, self.BLACK)
 
     def __draw_base_image(self, speed):
-        self._drawRect(0, 15, 31, 31)
+        #self._drawRect(0, 15, 31, 31)
+        self.canvas.Clear()
         graphics.DrawLine(self.canvas, 0, 13, 64, 13, self.RED)
         graphics.DrawText(self.canvas, self.font, (self.matrix.width / 15), (self.matrix.height - 5), self.GREEN,
                           '{0:.1f}'.format(speed))

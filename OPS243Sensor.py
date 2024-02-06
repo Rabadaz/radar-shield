@@ -6,6 +6,7 @@ import sys
 class OPS243Sensor(object):
     def __init__(self, serial_port="/dev/ttyACM1"):
         self.serial = serial.Serial(serial_port, 9600)
+        self.enabled = True
 
     def setup(self, direction_filter="I", min_detection_speed=1,json_output=True):
         if not self.serial.is_open:
@@ -31,12 +32,20 @@ class OPS243Sensor(object):
                 raw_data = self.serial.readline()
             except Exception:
                 return json_data
+
+            if not self.enabled:
+                return {"speed":0.0}
+
             try:
                 json_data = json.loads(raw_data)
                 if isinstance(json_data, float):
                     json_data = {"speed": json_data}
             except ValueError as e:
                 pass
+
+            if "speed" not in json_data:
+                return {"speed":0.0}
+
         return json_data
 
 
