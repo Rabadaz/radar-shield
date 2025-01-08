@@ -3,9 +3,9 @@ import cv2
 from tempfile import mkstemp
 from time import sleep, time
 
-class ImagePrinter:
 
-    def __init__(self, base_path = "./ImageStore"):
+class ImagePrinter:
+    def __init__(self, base_path="./ImageStore"):
         self.conn = cups.Connection()
         self.printer_name = "Canon_SELPHY_CP1500"
         cups.setUser('pi')
