@@ -10,7 +10,7 @@ class StateMachine:
 
 
     def __init__(self):
-        self.state = self.STATE.IDLE
+        self.state = self.STATE.WAITING
         self.last_switch = time.time()
 
     def switch(self, state, min_switch_time_duration = 0):
