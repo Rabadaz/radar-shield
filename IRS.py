@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import os
-import random
 from multiprocessing import Queue
 import threading
 
