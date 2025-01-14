@@ -38,8 +38,6 @@ if __name__ == "__main__":
     if os.environ.get("PRINTER") is None:
         printer.enabled = False
 
-
-
     sensorThread = threading.Thread(target=read_sensor_to_buffer)
     sensorThread.start()
 
