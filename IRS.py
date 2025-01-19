@@ -10,24 +10,28 @@ from OPS243Sensor import OPS243Sensor
 from MatrixDisplay import MatrixDisplay
 from ImagePrinter import ImagePrinter
 from Camera import Camera
+from blynk_device import BlynkDevice
 
 printer = ImagePrinter()
 sensor = OPS243Sensor(serial_port="/dev/ttyACM0")
 display = MatrixDisplay()
 camera = Camera()
+blynk_dev = BlynkDevice()
+state_machine = StateMachine(blynk_dev)
 
+measurements = Queue()
 
 image_threshold = 5  # km/h
-high_score = 0
-measurements = Queue()
-state_machine = StateMachine()
 run_high_score = 0
+high_score = 0
 
 
 def read_sensor_to_buffer():
     while True:
         mm = sensor.readLatestValue()
-        measurements.put(float(mm["speed"]) * 3.6)
+        if sensor.enabled:
+            measurements.put(float(mm["speed"]) * 3.6)
+
 
 def take_image():
     camera.take_image()
@@ -81,15 +85,14 @@ if __name__ == "__main__":
         elif state_machine.state == state_machine.STATE.WAITING_FOR_PRINT_CONFIRM:
             sensor.enabled = False
             # print if confirmed by blynk
-            while camera.in_progress:
-                sleep(0.1)
-            printer.print(camera.image)
-            state_machine.switch(StateMachine.STATE.WAITING)
 
-            display.display_print_message(run_high_score)
-            sleep(10)
-            #state_machine.switch(StateMachine.STATE.WAITING, min_switch_time_duration=60)
-
+            if blynk_dev.wait_for_print_response():
+                while camera.in_progress:
+                    sleep(0.1)
+                printer.print(camera.image)
+                state_machine.switch(StateMachine.STATE.WAITING)
+                display.display_print_message(run_high_score)
+                sleep(10)
         else:
             print("Unknown State switching to WAITING")
             state_machine.switch(state_machine.STATE.WAITING)
