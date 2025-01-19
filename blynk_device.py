@@ -1,5 +1,4 @@
 import BlynkLib
-import threading
 import os
 from dotenv import load_dotenv
 
