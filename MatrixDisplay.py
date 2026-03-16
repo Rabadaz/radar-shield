@@ -10,7 +10,7 @@ class MatrixDisplay:
     WHITE = graphics.Color(255, 255, 255)
     BLACK = graphics.Color(0, 0, 0)
 
-    def __init__(self, n_rows=32, n_cols=64, font_path="/home/pi/rpi-rgb-led-matrix/fonts/7x13.bdf"):
+    def __init__(self, n_rows=32, n_cols=64, font_path="/home/raspberry/rpi-rgb-led-matrix/fonts/7x13.bdf"):
         self.options = RGBMatrixOptions()
         self.options.rows = n_rows
         self.options.cols = n_cols
