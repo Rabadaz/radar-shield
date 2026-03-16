@@ -27,8 +27,9 @@ def read_sensor_to_buffer():
         mm = sensor.readLatestValue()
         if sensor.enabled:
             speed = float(mm["speed"]) * 3.6
-            if speed > 2:
-                measurements.put(speed)
+            smoothed_speed = EMA_ALPHA * speed + (1 - EMA_ALPHA) * smoothed_speed
+            if smoothed_speed > 2:
+                measurements.put( smoothed_speed)
 
 
 if __name__ == "__main__":
@@ -58,11 +59,10 @@ if __name__ == "__main__":
                 continue
 
             next_measurement = measurements.get()
-            smoothed_speed = EMA_ALPHA * next_measurement + (1 - EMA_ALPHA) * smoothed_speed
-            high_score = max(smoothed_speed, high_score)
-            run_high_score = max(smoothed_speed, run_high_score)
+            high_score = max(next_measurement, high_score)
+            run_high_score = max(next_measurement, run_high_score)
 
-            display.display_measurement(smoothed_speed, run_high_score)
+            display.display_measurement(next_measurement, run_high_score)
 
         else:
             print("Unknown State switching to WAITING")
