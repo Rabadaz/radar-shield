@@ -19,7 +19,7 @@ last_run_high_score = 0
 high_score = 0
 smoothed_speed = 0.0
 EMA_ALPHA = 0.1  # lower = more smoothing
-POST_RUN_DISPLAY_DURATION = 10  # seconds to show run result before switching to overall high score
+POST_RUN_DISPLAY_DURATION = 15  # seconds to show run result before switching to overall high score
 
 
 def read_sensor_to_buffer():
@@ -27,7 +27,7 @@ def read_sensor_to_buffer():
         mm = sensor.readLatestValue()
         if sensor.enabled:
             speed = float(mm["speed"]) * 3.6
-            if speed > 1.5:
+            if speed > 2:
                 measurements.put(speed)
 
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
             high_score = max(smoothed_speed, high_score)
             run_high_score = max(smoothed_speed, run_high_score)
 
-            display.display_measurement(smoothed_speed, run_high_score, beating_score=(run_high_score == smoothed_speed))
+            display.display_measurement(smoothed_speed, run_high_score)
 
         else:
             print("Unknown State switching to WAITING")
