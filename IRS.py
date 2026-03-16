@@ -48,7 +48,7 @@ if __name__ == "__main__":
             sensor.enabled = True
 
             if time.time() - state_machine.last_switch < POST_RUN_DISPLAY_DURATION:
-                display.display_measurement(0.0, run_high_score)
+                display.display_measurement(0.0, last_run_high_score)
             else:
                 display.display_high_score(high_score)
 
@@ -60,6 +60,7 @@ if __name__ == "__main__":
             next_measurement = measurements.get()
             high_score = max(next_measurement, high_score)
             run_high_score = max(next_measurement, run_high_score)
+            last_run_high_score = run_high_score
 
             display.display_measurement(next_measurement, run_high_score)
 
