@@ -18,7 +18,7 @@ run_high_score = 0
 last_run_high_score = 0
 high_score = 0
 smoothed_speed = 0.0
-EMA_ALPHA = 0.3  # lower = more smoothing
+EMA_ALPHA = 0.1  # lower = more smoothing
 POST_RUN_DISPLAY_DURATION = 10  # seconds to show run result before switching to overall high score
 
 
