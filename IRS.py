@@ -26,7 +26,9 @@ def read_sensor_to_buffer():
     while True:
         mm = sensor.readLatestValue()
         if sensor.enabled:
-            measurements.put(float(mm["speed"]) * 3.6)
+            speed = float(mm["speed"]) * 3.6
+            if speed > 1.5:
+                measurements.put(speed)
 
 
 if __name__ == "__main__":
