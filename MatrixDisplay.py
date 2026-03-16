@@ -45,14 +45,10 @@ class MatrixDisplay:
                           self.BLUE, "Score")
         self.matrix.SwapOnVSync(self.canvas)
 
-    def display_print_message(self, high_score):
-        self.__draw_base_image(high_score)
-        graphics.DrawText(self.canvas, self.font, (self.matrix.width / 1.7), (self.matrix.height - 20), self.RED,
-                          "Print?")
-        self.matrix.SwapOnVSync(self.canvas)
-
     def display_high_score(self, high_score):
-        self.__draw_base_image(high_score)
-        graphics.DrawText(self.canvas, self.font, (self.matrix.width / 1.7), (self.matrix.height - 20), self.RED,
-                          "Highscore!")
+        self.__draw_base_image(0.0)
+        graphics.DrawText(self.canvas, self.font, (self.matrix.width / 1.7), (self.matrix.height - 20),
+                          self.RED, '{0:.1f}'.format(high_score))
+        graphics.DrawText(self.canvas, self.font, (self.matrix.width / 15 - 5), (self.matrix.height - 20),
+                          self.RED, "High")
         self.matrix.SwapOnVSync(self.canvas)
