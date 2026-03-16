@@ -28,6 +28,7 @@ def read_sensor_to_buffer():
         if sensor.enabled:
             speed = float(mm["speed"]) * 3.6
             smoothed_speed = EMA_ALPHA * speed + (1 - EMA_ALPHA) * smoothed_speed
+            print(smoothed_speed)
             if smoothed_speed > 1.5:
                 measurements.put( smoothed_speed)
 
