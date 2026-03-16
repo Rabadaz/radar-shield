@@ -46,6 +46,8 @@ class MatrixDisplay:
         self.matrix.SwapOnVSync(self.canvas)
 
     def display_high_score(self, high_score):
+        self.canvas.Clear()
+        graphics.DrawLine(self.canvas, 0, 13, 64, 13, self.RED)
         #self.__draw_base_image(0.0)
         graphics.DrawText(self.canvas, self.font, (self.matrix.width / 15), (self.matrix.height - 5), self.GREEN,
                           "RUN!")
