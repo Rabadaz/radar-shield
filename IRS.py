@@ -48,13 +48,12 @@ if __name__ == "__main__":
             sensor.enabled = True
 
             if time.time() - state_machine.last_switch < POST_RUN_DISPLAY_DURATION:
-                display.display_high_score(last_run_high_score)
+                display.display_measurement(0.0, run_high_score)
             else:
                 display.display_high_score(high_score)
 
         elif state_machine.state == state_machine.STATE.DETECTING:
             if measurements.empty():
-                last_run_high_score = run_high_score
                 state_machine.switch(StateMachine.STATE.WAITING, min_switch_time_duration=5)
                 continue
 
