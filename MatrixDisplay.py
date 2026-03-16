@@ -42,13 +42,15 @@ class MatrixDisplay:
         graphics.DrawText(self.canvas, self.font, (self.matrix.width / 1.7), (self.matrix.height - 20),
                           self.BLUE, '{0:.1f}'.format(high_score))
         graphics.DrawText(self.canvas, self.font, (self.matrix.width / 15 - 5), (self.matrix.height - 20),
-                          self.BLUE, "Score")
+                          self.BLUE, "PB:")
         self.matrix.SwapOnVSync(self.canvas)
 
     def display_high_score(self, high_score):
-        self.__draw_base_image(0.0)
+        #self.__draw_base_image(0.0)
+        graphics.DrawText(self.canvas, self.font, (self.matrix.width / 15), (self.matrix.height - 5), self.GREEN,
+                          "RUN!")
         graphics.DrawText(self.canvas, self.font, (self.matrix.width / 1.7), (self.matrix.height - 20),
                           self.RED, '{0:.1f}'.format(high_score))
         graphics.DrawText(self.canvas, self.font, (self.matrix.width / 15 - 5), (self.matrix.height - 20),
-                          self.RED, "High")
+                          self.RED, "TS:")
         self.matrix.SwapOnVSync(self.canvas)
