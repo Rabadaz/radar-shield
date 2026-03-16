@@ -18,7 +18,7 @@ run_high_score = 0
 last_run_high_score = 0
 high_score = 0
 smoothed_speed = 0.0
-EMA_ALPHA = 0.1  # lower = more smoothing
+EMA_ALPHA = 0.3  # lower = more smoothing
 POST_RUN_DISPLAY_DURATION = 15  # seconds to show run result before switching to overall high score
 
 
@@ -28,7 +28,7 @@ def read_sensor_to_buffer():
         if sensor.enabled:
             speed = float(mm["speed"]) * 3.6
             smoothed_speed = EMA_ALPHA * speed + (1 - EMA_ALPHA) * smoothed_speed
-            if smoothed_speed > 2:
+            if smoothed_speed > 1.5:
                 measurements.put( smoothed_speed)
 
 
